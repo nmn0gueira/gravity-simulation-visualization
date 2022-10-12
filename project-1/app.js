@@ -77,6 +77,7 @@ function main(shaders)
                 drawPoints  = !drawPoints;
                 break; 
             case 'Shift':
+                injectParticles()
         }
     })
     
@@ -117,6 +118,7 @@ function main(shaders)
 
     }
 
+
     function buildParticleSystem(nParticles) {
         const data = [];
 
@@ -151,6 +153,44 @@ function main(shaders)
         gl.bufferData(gl.ARRAY_BUFFER, flatten(data), gl.STREAM_DRAW);
     }
 
+
+    function injectParticles() {
+        
+        let userParticlesBuffer = gl.createBuffer(); // nao tenho a certeza sobre este buffer
+
+        const data = [];
+
+        //for(let i=0; i<nParticles; ++i) {         For as long as the user presses SHIFT
+        // position
+        const x = getCursorPosition.x;
+        const y = getCursorPosition.y;
+
+        data.push(x); data.push(y);
+            
+        // age
+        data.push(0.0);
+
+        // life
+        const life = 6.0 + Math.random();
+        data.push(life);
+
+        // velocity
+        data.push(0.1*(Math.random()-0.5));
+        data.push(0.1*(Math.random()-0.5));
+        //}
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, userParticlesBuffer); // nao tenho a certeza sobre este buffer
+
+        gl.bufferData(gl.ARRAY_BUFFER, flatten(data), gl.STREAM_DRAW)
+
+        gl.vertexAttribPointer(vPosition, 2, gl.FLOAT, false, 24, 0);
+        gl.vertexAttribPointer(vAge, 1, gl.FLOAT, false, 24, 8);
+        gl.vertexAttribPointer(vLife, 1, gl.FLOAT, false, 24, 12);
+        gl.vertexAttribPointer(vVelocity, 2, gl.FLOAT, false, 24, 16);
+
+
+        drawParticles(userParticlesBuffer, 1);
+    }
 
 
     function animate(timestamp)
