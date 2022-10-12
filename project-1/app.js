@@ -99,8 +99,8 @@ function main(shaders)
         const mx = event.offsetX;
         const my = event.offsetY;
 
-        const x = ((mx / canvas.width * 2) - 1);
-        const y = (((canvas.height - my)/canvas.height * 2) -1);
+        const x = ((mx / canvas.width * 2) - 1)*1.5;
+        const y = (((canvas.height - my)/canvas.height * 2) -1)*1.5;
 
         return vec2(x,y);
     }
@@ -231,7 +231,14 @@ function main(shaders)
         gl.bindBuffer(gl.ARRAY_BUFFER, quadBuffer);
         gl.enableVertexAttribArray(vPosition);
         gl.vertexAttribPointer(vPosition, 2, gl.FLOAT, false, 0, 0);
-        
+
+        const uDx =gl.getUniformLocation(fieldProgram, "scaleX");
+        const uDy =gl.getUniformLocation(fieldProgram, "scaleY");
+        gl.uniform1f(uDx,1.5);
+        gl.uniform1f(uDy,(canvas.height/canvas.width)*3.0);
+
+
+
         gl.drawArrays(gl.TRIANGLES, 0, 6);
     }
 
@@ -250,7 +257,14 @@ function main(shaders)
 
         gl.drawArrays(gl.POINTS, 0, nParticles);
     }
+    
+
+
 }
+
+
+
+
 
 
 loadShadersFromURLS([
