@@ -1,8 +1,19 @@
 precision mediump float;
+const int MAXBODIES = 10;
 
 /* Number of seconds (possibly fractional) that has passed since the last
    update step. */
 uniform float uDeltaTime;
+
+/* (comentario)
+*/
+uniform vec2 uOrigin;
+
+uniform vec2 uPosition[MAXBODIES];
+uniform float uRadius[MAXBODIES];  // pode ser que se ponha a 0 ou com o numero de planetas de momento
+
+//gl.getUniformLocation(...,"uRadius")
+//fazer contas gravidade??
 
 /* Inputs. These reflect the state of a single particle before the update. */
 
@@ -40,7 +51,8 @@ void main() {
    vVelocityOut = vVelocity + accel * uDeltaTime;
       
    if (vAgeOut >= vLife) {
-      // It's all up to you!
+      vAgeOut = 0.0;
+      vPositionOut = uOrigin;
+      vLifeOut = vLife;   // precisa de mudanças futuras (metodo rand com argumentos diferentes)
    }
-
 }

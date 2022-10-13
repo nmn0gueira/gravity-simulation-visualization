@@ -8,6 +8,8 @@ let inParticlesBuffer, outParticlesBuffer, quadBuffer;
 
 // Total number of particles
 const N_PARTICLES = 1000;
+let mousePosition;
+let origin = vec2(0.0,0.0);
 
 let drawPoints = true;
 let drawField = true;
@@ -77,7 +79,8 @@ function main(shaders)
                 drawPoints  = !drawPoints;
                 break; 
             case 'Shift':
-                injectParticles()
+                origin = mousePosition;  // FALTA FAZER COM QUE O SHIFT CRIE PARTICULAS ENQUANTO O MOUSE MEXE
+           
         }
     })
     
@@ -86,7 +89,8 @@ function main(shaders)
 
     canvas.addEventListener("mousemove", function(event) {
         const p = getCursorPosition(canvas, event);
-
+        mousePosition = p;
+  
         console.log(p);
     });
 
@@ -101,7 +105,7 @@ function main(shaders)
         const my = event.offsetY;
 
         const x = ((mx / canvas.width * 2) - 1)*1.5;
-        const y = (((canvas.height - my)/canvas.height * 2) -1)*1.5;
+        const y = (((canvas.height - my)/canvas.height * 2) -1)*1.5*(canvas.height/canvas.width); //alteraçao a seguir ao 1.5
 
         return vec2(x,y);
     }
@@ -124,8 +128,8 @@ function main(shaders)
 
         for(let i=0; i<nParticles; ++i) {
             // position
-            const x = Math.random()-0.5;
-            const y = Math.random()-0.5;
+            const x = (Math.random() - 0.5) * 2*1.5;
+            const y = (Math.random() - 0.5) * 2*1.5*(canvas.height/canvas.width);
 
             data.push(x); data.push(y);
             
@@ -151,45 +155,6 @@ function main(shaders)
         // Output buffer
         gl.bindBuffer(gl.ARRAY_BUFFER, outParticlesBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, flatten(data), gl.STREAM_DRAW);
-    }
-
-
-    function injectParticles() {
-        
-        let userParticlesBuffer = gl.createBuffer(); // nao tenho a certeza sobre este buffer
-
-        const data = [];
-
-        //for(let i=0; i<nParticles; ++i) {         For as long as the user presses SHIFT
-        // position
-        const x = getCursorPosition.x;
-        const y = getCursorPosition.y;
-
-        data.push(x); data.push(y);
-            
-        // age
-        data.push(0.0);
-
-        // life
-        const life = 6.0 + Math.random();
-        data.push(life);
-
-        // velocity
-        data.push(0.1*(Math.random()-0.5));
-        data.push(0.1*(Math.random()-0.5));
-        //}
-
-        gl.bindBuffer(gl.ARRAY_BUFFER, userParticlesBuffer); // nao tenho a certeza sobre este buffer
-
-        gl.bufferData(gl.ARRAY_BUFFER, flatten(data), gl.STREAM_DRAW)
-
-        gl.vertexAttribPointer(vPosition, 2, gl.FLOAT, false, 24, 0);
-        gl.vertexAttribPointer(vAge, 1, gl.FLOAT, false, 24, 8);
-        gl.vertexAttribPointer(vLife, 1, gl.FLOAT, false, 24, 12);
-        gl.vertexAttribPointer(vVelocity, 2, gl.FLOAT, false, 24, 16);
-
-
-        drawParticles(userParticlesBuffer, 1);
     }
 
 
@@ -222,11 +187,14 @@ function main(shaders)
     {
         // Setup uniforms
         const uDeltaTime = gl.getUniformLocation(updateProgram, "uDeltaTime");
-        
+        const uOrigin = gl.getUniformLocation(updateProgram, "uOrigin");// para o uOrigin
+
         gl.useProgram(updateProgram);
 
         gl.uniform1f(uDeltaTime, deltaTime);
-        
+        //atualizar a posição do cursor
+        gl.uniform2fv(uOrigin, origin); // isto so acontece clicando no shift
+    
         // Setup attributes
         const vPosition = gl.getAttribLocation(updateProgram, "vPosition");
         const vAge = gl.getAttribLocation(updateProgram, "vAge");
@@ -265,18 +233,15 @@ function main(shaders)
 
         gl.useProgram(fieldProgram);
 
+        const uScale =gl.getUniformLocation(fieldProgram, "uScale");
+        gl.uniform2f(uScale, 1.5, 1.5 * canvas.height/canvas.width);
+
         // Setup attributes
         const vPosition = gl.getAttribLocation(fieldProgram, "vPosition"); 
 
         gl.bindBuffer(gl.ARRAY_BUFFER, quadBuffer);
         gl.enableVertexAttribArray(vPosition);
         gl.vertexAttribPointer(vPosition, 2, gl.FLOAT, false, 0, 0);
-
-        const uDx =gl.getUniformLocation(fieldProgram, "scaleX");
-        const uDy =gl.getUniformLocation(fieldProgram, "scaleY");
-        gl.uniform1f(uDx,1.5);
-        gl.uniform1f(uDy,(canvas.height/canvas.width)*3.0);
-
 
 
         gl.drawArrays(gl.TRIANGLES, 0, 6);
@@ -287,8 +252,12 @@ function main(shaders)
 
         gl.useProgram(renderProgram);
 
+        // Setup uniforms
+        const uScale = gl.getUniformLocation(renderProgram, "uScale");
+        gl.uniform2f(uScale, 1.5, 1.5 * canvas.height/canvas.width);
+
         // Setup attributes
-        const vPosition = gl.getAttribLocation(renderProgram, "vPosition");
+        const vPosition = gl.getAttribLocation(renderProgram, "vPosition");    
 
         gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
 
