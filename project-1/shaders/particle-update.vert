@@ -5,15 +5,26 @@ const int MAXBODIES = 10;
    update step. */
 uniform float uDeltaTime;
 
-/* (comentario)
+/* Point of coordinates where the particles will spawn
 */
 uniform vec2 uOrigin;
 
+/* All planets' positions
+*/
 uniform vec2 uPosition[MAXBODIES];
-uniform float uRadius[MAXBODIES];  // pode ser que se ponha a 0 ou com o numero de planetas de momento
+
+/* All planets' radiuses
+*/
+uniform float uRadius[MAXBODIES];  // em vez de MAXBODIES pode ser que se ponha a 0 ou com o numero de planetas de momento
 
 //gl.getUniformLocation(...,"uRadius")
 //fazer contas gravidade??
+
+// Starting maximum life of a particle [2,20]
+uniform highp float uMaxLife;
+
+// Starting minimum life of a particle [1,19]
+uniform highp float uMinLife;
 
 /* Inputs. These reflect the state of a single particle before the update. */
 
@@ -47,12 +58,13 @@ void main() {
    vAgeOut = vAge + uDeltaTime;
    vLifeOut = vLife;
 
+
    vec2 accel = vec2(0.0);
    vVelocityOut = vVelocity + accel * uDeltaTime;
       
    if (vAgeOut >= vLife) {
       vAgeOut = 0.0;
       vPositionOut = uOrigin;
-      vLifeOut = vLife;   // precisa de mudanças futuras (metodo rand com argumentos diferentes)
+      vLifeOut = uMinLife+rand(vec2(vAge,vPosition))*(uMaxLife-uMinLife); // A PRINCIPIO TA TUDO BEM
    }
 }

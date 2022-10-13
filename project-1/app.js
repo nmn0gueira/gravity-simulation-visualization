@@ -8,8 +8,15 @@ let inParticlesBuffer, outParticlesBuffer, quadBuffer;
 
 // Total number of particles
 const N_PARTICLES = 1000;
+const MAX_MINLIFE = 19;
+const MIN_MINLIFE = 1;
+const MAX_MAXLIFE = 20;
+const MIN_MAXLIFE = 2;
+
 let mousePosition;
 let origin = vec2(0.0,0.0);
+let maxLife = 10;
+let minLife = 2;
 
 let drawPoints = true;
 let drawField = true;
@@ -64,13 +71,27 @@ function main(shaders)
                 break;
             case "ArrowRight":
                 break;
-            case 'q':
+            case 'q': //aumentar minLife
+                if (minLife < MAX_MINLIFE) {
+                    if(minLife == maxLife-1) 
+                    maxLife++
+                minLife++;
+                }        
                 break;
-            case 'a':
+            case 'a': //diminuir minLife
+                if (minLife > MIN_MINLIFE)
+                    minLife--;
                 break;
-            case 'w':
+            case 'w': //aumentar maxLife
+                if (maxLife < MAX_MAXLIFE)
+                    maxLife++;
                 break;
-            case 's':
+            case 's': //diminuir maxLife
+                if (maxLife > MIN_MAXLIFE) {
+                    if (maxLife == minLife+1)
+                    minLife--;
+                maxLife--;
+                }   
                 break;
             case '0':
                 drawField = !drawField;
@@ -79,7 +100,7 @@ function main(shaders)
                 drawPoints  = !drawPoints;
                 break; 
             case 'Shift':
-                origin = mousePosition;  // FALTA FAZER COM QUE O SHIFT CRIE PARTICULAS ENQUANTO O MOUSE MEXE
+                origin = mousePosition; 
            
         }
     })
@@ -188,12 +209,21 @@ function main(shaders)
         // Setup uniforms
         const uDeltaTime = gl.getUniformLocation(updateProgram, "uDeltaTime");
         const uOrigin = gl.getUniformLocation(updateProgram, "uOrigin");// para o uOrigin
+        const uMaxLife = gl.getUniformLocation(updateProgram, "uMaxLife");
+        const uMinLife = gl.getUniformLocation(updateProgram, "uMinLife");
 
         gl.useProgram(updateProgram);
 
         gl.uniform1f(uDeltaTime, deltaTime);
+
         //atualizar a posição do cursor
         gl.uniform2fv(uOrigin, origin); // isto so acontece clicando no shift
+
+        //atualizar a vida maxima de particulas
+        gl.uniform1f(uMaxLife, maxLife);
+
+        //atualizar a vida minima de particulas
+        gl.uniform1f(uMinLife, minLife)
     
         // Setup attributes
         const vPosition = gl.getAttribLocation(updateProgram, "vPosition");
