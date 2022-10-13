@@ -40,7 +40,13 @@ void main() {
    vVelocityOut = vVelocity + accel * uDeltaTime;
       
    if (vAgeOut >= vLife) {
-      // It's all up to you!
+   vAgeOut=0.0;
+   vLifeOut=0.0;
+   vPositionOut = vec2(0.0,0.0);
+
+   
+   
+ 
    }
 
 }
