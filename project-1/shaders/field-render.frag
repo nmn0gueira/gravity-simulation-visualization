@@ -3,7 +3,7 @@ varying vec2 fColor;
 
 vec2 getDecimal(vec2 v)
 {
-return vec2(mod(v.x,1.0),mod(v.y,1.0));
+return vec2(mod(v.x*2.0,1.0),mod(v.y*2.0,1.0));
 
 }
 
