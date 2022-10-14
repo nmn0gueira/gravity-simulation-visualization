@@ -6,8 +6,8 @@ let inParticlesBuffer, outParticlesBuffer, quadBuffer;
 
 // Particle system constants
 
-// Total number of particles
-const N_PARTICLES = 1000;
+// Total number of particles, PARA TESTAR, PARA JA TEMOS 1000
+const N_PARTICLES = 1000; // O NUMERO DE PARTICULAS TEM DE SER 1 MILHAO (10 ELEVADO A 6) OU 100000
 const MAX_MINLIFE = 19;
 const MIN_MINLIFE = 1;
 const MAX_MAXLIFE = 20;
@@ -25,8 +25,8 @@ let planetInputCenter;
 let planetInputRadius;
 let radius;
 
-let planetRadius=[MAX_PLANETS];
-let planetCenter=[MAX_PLANETS];
+let planetRadiuses=[];
+let planetCenters=[];
 
 let drawPoints = true;
 let drawField = true;
@@ -117,10 +117,7 @@ function main(shaders)
     
     canvas.addEventListener("mousedown", function(event) {
        //--------
-        planetInputCenter =getCursorPosition(canvas, event);
-
-
-       
+        planetInputCenter = getCursorPosition(canvas, event);
 
     });
 
@@ -134,12 +131,15 @@ function main(shaders)
 
     canvas.addEventListener("mouseup", function(event) {
 //---------
-        planetInputRadius=getCursorPosition(canvas, event);
-        planetRadius[numberPlanets] = calculeRadius(planetInputCenter,planetInputRadius);
-        planetCenter[numberPlanets] = planetInputCenter;
+        planetInputRadius= getCursorPosition(canvas, event);
+
+        const planetRadius = getRadius(planetInputCenter,planetInputRadius);
+
+        planetRadiuses.push(planetRadius);
+        planetCenters.push(planetInputCenter);
+        
+        console.log(planetCenters[numberPlanets]);
         numberPlanets++;
-
-
 
     })
 
@@ -302,15 +302,22 @@ function main(shaders)
         const uScale =gl.getUniformLocation(fieldProgram, "uScale");
         gl.uniform2f(uScale, 1.5, 1.5 * canvas.height/canvas.width);
 
+        for(let i=0; i<numberPlanets; i++) {
+            // Get the location of the uniforms...
+            const uPosition = gl.getUniformLocation(fieldProgram, "uPosition[" + i + "]");
+            const uRadius = gl.getUniformLocation(fieldProgram, "uRadius[" + i + "]");
+            // Send the corresponding values to the GLSL program
+            gl.uniform2fv(uPosition, planetCenters[i]);
+            gl.uniform1f(uRadius, planetRadiuses[i]);
+        }
+
         // Setup attributes
         const vPosition = gl.getAttribLocation(fieldProgram, "vPosition"); 
 
         gl.bindBuffer(gl.ARRAY_BUFFER, quadBuffer);
         gl.enableVertexAttribArray(vPosition);
         gl.vertexAttribPointer(vPosition, 2, gl.FLOAT, false, 0, 0);
-        
-        //------
-        buildPlanets();
+    
 
         gl.drawArrays(gl.TRIANGLES, 0, 6);
     }
@@ -325,7 +332,7 @@ function main(shaders)
         gl.uniform2f(uScale, 1.5, 1.5 * canvas.height/canvas.width);
 
         // Setup attributes
-        const vPosition = gl.getAttribLocation(renderProgram, "vPosition");    
+        const vPosition = gl.getAttribLocation(renderProgram, "vPosition");
 
         gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
 
@@ -335,26 +342,11 @@ function main(shaders)
         gl.drawArrays(gl.POINTS, 0, nParticles);
     }
 
-    //
-    function buildPlanets(){
-       
-for(let i=0; i<numberPlanets; i++) {
-    // Get the location of the uniforms...
-    const uPosition = gl.getUniformLocation(fieldProgram, "uPosition[" + i + "]");
-    const uRadius = gl.getUniformLocation(fieldProgram, "uRadius[" + i + "]");
-    // Send the corresponding values to the GLSL program
-    gl.uniform2fv(uPosition, planetCenter[i]);
-    gl.uniform1f(uRadius, planetRadius[i]);
-}
-
-
-
-    }
     //verificar se é a funçao certa para calcular a distancia
-    function calculeRadius(point1,point2){
-     radius = length(point1, point2);
+    function getRadius(planetInputCenter,planetInputRadius){
+        radius = length(planetInputCenter, planetInputRadius);
      
-     return radius
+        return radius;
     }
 
 

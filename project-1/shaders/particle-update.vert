@@ -1,5 +1,8 @@
+
 precision mediump float;
 const int MAXBODIES = 10;
+const float UNIVERSAL_GRAVITATION = 6.67*pow(10.0,-11.0); // should work
+const int MASS = 1; // every particle has a mass of 1 kg
 
 /* Number of seconds (possibly fractional) that has passed since the last
    update step. */
@@ -54,17 +57,18 @@ highp float rand(vec2 co)
 void main() {
 
    /* Update parameters according to our simple rules.*/
-   vPositionOut = vPosition + vVelocity * uDeltaTime;
+   vPositionOut = vPosition + vVelocity * uDeltaTime; // p(t+h) = p(t) + v(t) * h 
    vAgeOut = vAge + uDeltaTime;
    vLifeOut = vLife;
 
-
+   // EM VEZ DE accel, AQUI DEVIA ESTAR A FUNCAO net_force(vPosition) QUE VAI TOMAR EM CONTA FORCA GRAVITICA
    vec2 accel = vec2(0.0);
-   vVelocityOut = vVelocity + accel * uDeltaTime;
+   vVelocityOut = vVelocity + accel * uDeltaTime;  //  v(t+h) = v(t) + F(t)/m * h 
       
    if (vAgeOut >= vLife) {
       vAgeOut = 0.0;
       vPositionOut = uOrigin;
       vLifeOut = uMinLife+rand(vec2(vAge,vPosition))*(uMaxLife-uMinLife); // n tenho a certeza se randomiza de maneira diferente para cada particula
+      //mandar as particulas numa direçao aleatoria entre dois parametros
    }
 }
