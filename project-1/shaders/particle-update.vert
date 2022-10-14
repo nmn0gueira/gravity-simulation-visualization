@@ -65,6 +65,6 @@ void main() {
    if (vAgeOut >= vLife) {
       vAgeOut = 0.0;
       vPositionOut = uOrigin;
-      vLifeOut = uMinLife+rand(vec2(vAge,vPosition))*(uMaxLife-uMinLife); // A PRINCIPIO TA TUDO BEM
+      vLifeOut = uMinLife+rand(vec2(vAge,vPosition))*(uMaxLife-uMinLife); // n tenho a certeza se randomiza de maneira diferente para cada particula
    }
 }

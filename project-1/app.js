@@ -208,9 +208,14 @@ function main(shaders)
     {
         // Setup uniforms
         const uDeltaTime = gl.getUniformLocation(updateProgram, "uDeltaTime");
+
         const uOrigin = gl.getUniformLocation(updateProgram, "uOrigin");// para o uOrigin
+
         const uMaxLife = gl.getUniformLocation(updateProgram, "uMaxLife");
         const uMinLife = gl.getUniformLocation(updateProgram, "uMinLife");
+
+        //const uMaxVel = gl.getUniformLocation(updateProgram, "uMaxVel");
+        //const uMinVel = gl.getUniformLocation(updateProgram, "uMinVel")
 
         gl.useProgram(updateProgram);
 
@@ -224,6 +229,12 @@ function main(shaders)
 
         //atualizar a vida minima de particulas
         gl.uniform1f(uMinLife, minLife)
+
+        //atualizar a velocidade maxima das particulas
+        //gl.uniform2fv(uMaxVel, maxVel);
+
+        //atualizar a velocidade minima das particulas
+        //gl.uniform2fv(uMinVel, minVel);
     
         // Setup attributes
         const vPosition = gl.getAttribLocation(updateProgram, "vPosition");
