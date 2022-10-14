@@ -1,5 +1,5 @@
 import { buildProgramFromSources, loadShadersFromURLS, setupWebGL } from '../../libs/utils.js';
-import { vec2, flatten, subtract, dot } from '../../libs/MV.js';
+import { vec2, flatten, subtract, dot,length } from '../../libs/MV.js';
 
 // Buffers: particles before update, particles after update, quad vertices
 let inParticlesBuffer, outParticlesBuffer, quadBuffer;
@@ -12,11 +12,21 @@ const MAX_MINLIFE = 19;
 const MIN_MINLIFE = 1;
 const MAX_MAXLIFE = 20;
 const MIN_MAXLIFE = 2;
+const MAX_PLANETS =10;
 
 let mousePosition;
 let origin = vec2(0.0,0.0);
 let maxLife = 10;
 let minLife = 2;
+
+//-------
+let numberPlanets=0;
+let planetInputCenter;
+let planetInputRadius;
+let radius;
+
+let planetRadius=[MAX_PLANETS];
+let planetCenter=[MAX_PLANETS];
 
 let drawPoints = true;
 let drawField = true;
@@ -106,16 +116,31 @@ function main(shaders)
     })
     
     canvas.addEventListener("mousedown", function(event) {
+       //--------
+        planetInputCenter =getCursorPosition(canvas, event);
+
+
+       
+
     });
 
     canvas.addEventListener("mousemove", function(event) {
         const p = getCursorPosition(canvas, event);
         mousePosition = p;
+        
   
         console.log(p);
     });
 
     canvas.addEventListener("mouseup", function(event) {
+//---------
+        planetInputRadius=getCursorPosition(canvas, event);
+        planetRadius[numberPlanets] = calculeRadius(planetInputCenter,planetInputRadius);
+        planetCenter[numberPlanets] = planetInputCenter;
+        numberPlanets++;
+
+
+
     })
 
     
@@ -272,7 +297,9 @@ function main(shaders)
         gl.bindBuffer(gl.ARRAY_BUFFER, quadBuffer);
         gl.enableVertexAttribArray(vPosition);
         gl.vertexAttribPointer(vPosition, 2, gl.FLOAT, false, 0, 0);
-
+        
+        //------
+        buildPlanets();
 
         gl.drawArrays(gl.TRIANGLES, 0, 6);
     }
@@ -296,7 +323,28 @@ function main(shaders)
 
         gl.drawArrays(gl.POINTS, 0, nParticles);
     }
-    
+
+    //
+    function buildPlanets(){
+       
+for(let i=0; i<numberPlanets; i++) {
+    // Get the location of the uniforms...
+    const uPosition = gl.getUniformLocation(fieldProgram, "uPosition[" + i + "]");
+    const uRadius = gl.getUniformLocation(fieldProgram, "uRadius[" + i + "]");
+    // Send the corresponding values to the GLSL program
+    gl.uniform2fv(uPosition, planetCenter[i]);
+    gl.uniform1f(uRadius, planetRadius[i]);
+}
+
+
+
+    }
+    //verificar se é a funçao certa para calcular a distancia
+    function calculeRadius(point1,point2){
+     radius = length(point1, point2);
+     
+     return radius
+    }
 
 
 }
