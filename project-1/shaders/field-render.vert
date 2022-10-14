@@ -30,8 +30,8 @@ float bodiesDistance(vec2 v1, vec2 v2){
 }
 
 
-float planet_force(int i, vec2 pos) {
-     return 2.0;//UNIVERSAL_GRAVITATION*((1.0*planet_mass(uRadius[i]))/pow(bodiesDistance(uPosition[i],pos),2.0)); 
+vec2 planet_force(vec2 pos, float radius) {
+     return pos * UNIVERSAL_GRAVITATION*((1.0*planet_mass(radius))/pow(bodiesDistance(pos,fPosition),2.0)); 
 }
 
 vec2 net_force(vec2 pos) {
@@ -39,7 +39,7 @@ vec2 net_force(vec2 pos) {
 
     for(int i = 0; i < MAX_PLANETS; i++){
         // calculates the force     
-         force = force + planet_force(i, pos);
+         force = force + planet_force(uPosition[i], uRadius[i]);
     }
    return force;
 }
@@ -54,7 +54,7 @@ void main()
 
     vec2 f = net_force(pos);                                                                            // nao sei se e vec3 ou vec2
 
-    fPosition=vPosition * uScale; //mudar isto pra fPosition
+    fPosition= vPosition * uScale; //mudar isto pra fPosition
     force=f;
     gl_Position = vec4(vPosition, 0.0, 1.0);
     

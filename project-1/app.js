@@ -22,7 +22,7 @@ let minLife = 2;
 //-------
 let numberPlanets=0;
 let planetInputCenter;
-let planetInputRadius;
+let planetInputBorder;
 let radius;
 
 let planetRadiuses=[];
@@ -116,9 +116,9 @@ function main(shaders)
     })
     
     canvas.addEventListener("mousedown", function(event) {
-       //--------
         planetInputCenter = getCursorPosition(canvas, event);
-
+        console.log(1);
+        
     });
 
     canvas.addEventListener("mousemove", function(event) {
@@ -132,10 +132,9 @@ function main(shaders)
     });
 
     canvas.addEventListener("mouseup", function(event) {
-//---------
-        planetInputRadius= getCursorPosition(canvas, event);
+        planetInputBorder= getCursorPosition(canvas, event);
 
-        const planetRadius = getRadius(planetInputCenter,planetInputRadius);
+        const planetRadius = getRadius(planetInputCenter,planetInputBorder);
 
         planetRadiuses.push(planetRadius);
         planetCenters.push(planetInputCenter);
@@ -345,13 +344,11 @@ function main(shaders)
     }
 
     //verificar se é a funçao certa para calcular a distancia
-    function getRadius(planetInputCenter,planetInputRadius){
-        radius = length(planetInputCenter, planetInputRadius);
+    function getRadius(planetInputCenter,planetInputBorder){
+        radius = length(planetInputCenter, planetInputBorder);
      
         return radius;
     }
-
-
 }
 
 

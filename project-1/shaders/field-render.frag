@@ -2,7 +2,7 @@ precision highp float;
 
 const float PI = 3.14151;
 const float TWO_PI = 2.0*PI;
-const int MAX_PLANETS=10;
+//const int MAX_PLANETS=10;
 const float MEDIUM_DENSITY = 5.51*pow(10.0,3.0); 
 const float SCALE_FACTOR = 6.371 * pow(10.0,6.0);
  // should work
@@ -55,9 +55,9 @@ vec3 hsv2rgb(vec3 c)
 
 
 void main() {
-   float lf = length(force.xy);
+    float lf = length(force.xy);
 
-    vec4 color = getDecimal(vec4(hsv2rgb(vec3(atan(force.y,force.x)/TWO_PI,1.0,1.0)),lf));
-    // Verificar se é este o atributo que tem que ir e se é necessario usar o get decimal
+    vec4 color = vec4(hsv2rgb(vec3(atan(force.y,force.x)/TWO_PI,1.0,1.0)),lf);
+    
     gl_FragColor = vec4(color);
 }
