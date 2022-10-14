@@ -63,5 +63,5 @@ void main() {
 
     vec4 color = vec4(hsv2rgb(vec3(atan(f.y,f.x)/TWO_PI,1.0,1.0)),lf);
     
-    gl_FragColor = vec4(getDecimal(fPosition), 0.0, 1.0);
+    gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);  //getDecimal(fPosition)
 }
