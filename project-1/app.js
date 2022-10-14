@@ -7,7 +7,7 @@ let inParticlesBuffer, outParticlesBuffer, quadBuffer;
 // Particle system constants
 
 // Total number of particles, PARA TESTAR, PARA JA TEMOS 1000
-const N_PARTICLES = 1000; // O NUMERO DE PARTICULAS TEM DE SER 1 MILHAO (10 ELEVADO A 6) OU 100000
+const N_PARTICLES = 100000; // O NUMERO DE PARTICULAS TEM DE SER 1 MILHAO (10 ELEVADO A 6) OU 100000
 const MAX_MINLIFE = 19;
 const MIN_MINLIFE = 1;
 const MAX_MAXLIFE = 20;
@@ -110,7 +110,7 @@ function main(shaders)
                 drawPoints  = !drawPoints;
                 break; 
             case 'Shift':
-                origin = mousePosition; 
+               origin = mousePosition; 
            
         }
     })
@@ -125,7 +125,9 @@ function main(shaders)
         const p = getCursorPosition(canvas, event);
         mousePosition = p;
         
-  
+        if(event.shiftKey)
+           origin = p;
+
         console.log(p);
     });
 

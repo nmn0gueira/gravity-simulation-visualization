@@ -13,8 +13,8 @@ attribute vec2 vPosition;
 
 //
 
-uniform float uRadius[MAX_PLANETS];
-uniform vec2 uPosition[MAX_PLANETS];
+//uniform float uRadius[MAX_PLANETS];
+//uniform vec2 uPosition[MAX_PLANETS];
 // mass = (4*PI*pow(radius,3.0)/3)* density         FUNCAO QUE CALCULA A MASSA
 
 //for (int i = 0; i<1; i++) { // definir os planetas no field
@@ -24,8 +24,6 @@ uniform vec2 uPosition[MAX_PLANETS];
 
 //depois usar algo assim mas penso que não funcione
 
-//cc=vPOsition
-//output= o que enviar para o frag
 /*void main() {
      /*Check if the pixel is inside the circle
        and color it with a gradient. Otherwise, color it 
