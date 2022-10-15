@@ -20,7 +20,7 @@ return vec4(mod(v.x,1.0), mod(v.y,1.0), mod(v.w,1.0), mod(v.z,1.0));
 
 
 float planet_mass(float radius) {
-    float mass = (4.0*PI*pow(radius,3.0)/3.0)*MEDIUM_DENSITY;
+    float mass = (4.0*PI*pow(radius*SCALE_FACTOR,3.0)/3.0)*MEDIUM_DENSITY;
 
     return mass;
 }    
@@ -28,12 +28,12 @@ float planet_mass(float radius) {
 float bodiesDistance(vec2 v1, vec2 v2){
    float dx = v1.x - v2.x;
    float dy = v1.y - v2.y;
-   return sqrt(dx*dx + dy*dy);
+   return sqrt(dx*dx + dy*dy)*SCALE_FACTOR;
 }
 
 
 vec2 planet_force(vec2 pos, float radius) {
-     return pos * UNIVERSAL_GRAVITATION*((1.0*planet_mass(radius))/pow(bodiesDistance(pos,fPosition),2.0)); 
+     return normalize(pos-fPosition)* UNIVERSAL_GRAVITATION*((1.0*planet_mass(radius))/pow(bodiesDistance(pos,fPosition),2.0)); 
 }
 
 vec2 net_force(vec2 pos) {
@@ -61,9 +61,9 @@ void main() {
 
     vec2 f = net_force(pos);  // nao sei se e vec3 ou vec2
 
-    float lf = length(f.xy);
+    float lf = smoothstep(0.15, mod(log(length(f)),.6),0.85);
 
-    vec4 color = vec4(hsv2rgb(vec3(atan(f.y,f.x)/TWO_PI,1.0,1.0)),lf);
+    vec4 color = vec4(hsv2rgb(vec3(atan(f.y,f.x)/TWO_PI,1.0,1.0)), sin(lf));
     
     gl_FragColor = vec4(color);
 }
