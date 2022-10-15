@@ -20,7 +20,7 @@ return vec4(mod(v.x,1.0), mod(v.y,1.0), mod(v.w,1.0), mod(v.z,1.0));
 
 
 float planet_mass(float radius) {
-    float mass = (4.0*PI*pow(radius,3.0)/3.0)*MEDIUM_DENSITY;
+    float mass = (4.0*PI*pow(radius*SCALE_FACTOR,3.0)/3.0)*MEDIUM_DENSITY;
 
     return mass;
 }    
@@ -28,12 +28,12 @@ float planet_mass(float radius) {
 float bodiesDistance(vec2 v1, vec2 v2){
    float dx = v1.x - v2.x;
    float dy = v1.y - v2.y;
-   return sqrt(dx*dx + dy*dy);
+   return sqrt(dx*dx + dy*dy)*SCALE_FACTOR;
 }
 
 
 vec2 planet_force(vec2 pos, float radius) {
-     return pos * UNIVERSAL_GRAVITATION*((1.0*planet_mass(radius))/pow(bodiesDistance(pos,fPosition),2.0)); 
+     return vec2(0.0,0.0) + UNIVERSAL_GRAVITATION *((1.0*planet_mass(radius))/pow(bodiesDistance(pos,fPosition),2.0)); 
 }
 
 vec2 net_force(vec2 pos) {
@@ -43,7 +43,7 @@ vec2 net_force(vec2 pos) {
         // calculates the force     
          force = force + planet_force(uPosition[i], uRadius[i]);
     }
-   return force;
+   return force + pos;
 }
 
 

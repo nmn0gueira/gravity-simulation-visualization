@@ -134,7 +134,6 @@ function main(shaders)
         planetInputBorder= getCursorPosition(canvas, event);
 
         const planetRadius = getRadius(planetInputCenter,planetInputBorder);
-        alert(planetRadius);
 
         planetRadiuses.push(planetRadius);
         planetCenters.push(planetInputCenter);
@@ -188,12 +187,12 @@ function main(shaders)
             data.push(life);
 
             // velocity
-            data.push(0.1*(Math.random() - 0.5));
-            data.push(0.1*(Math.random() - 0.5));
-            //let rand = Math.random()*(2*Math.PI)+1; 
-            //data.push(0.1*(Math.cos(rand)/Math.sin(rand)));
-            //rand = Math.random()*(2*Math.PI)+1;
-            //data.push(0.1*(Math.sin(rand)/Math.cos(rand)));
+            //data.push(0.1*(Math.random() - 0.5));
+            //data.push(0.1*(Math.random() - 0.5));
+            let rand = Math.random()*(2*Math.PI)+1; 
+            data.push(0.1*(Math.cos(rand)/Math.sin(rand)));
+            rand = Math.random()*(2*Math.PI)+1;
+            data.push(0.1*(Math.sin(rand)/Math.cos(rand)));
         }
 
         inParticlesBuffer = gl.createBuffer();
