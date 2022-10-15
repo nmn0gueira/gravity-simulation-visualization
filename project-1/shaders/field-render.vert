@@ -2,7 +2,7 @@ precision mediump float;
 
 const float PI = 3.14151;
 const float TWO_PI = 2.0*PI;
-const int MAX_PLANETS=10;
+const int MAX_PLANETS = 10;
 const float MEDIUM_DENSITY = 5.51*pow(10.0,3.0); 
 const float SCALE_FACTOR = 6.371 * pow(10.0,6.0);
 const float UNIVERSAL_GRAVITATION = 6.67*pow(10.0,-11.0); // should work
@@ -35,7 +35,7 @@ vec2 planet_force(vec2 pos, float radius) {
 }
 
 vec2 net_force(vec2 pos) {
-    vec2 force = vec2(0, 0);
+    vec2 force = vec2(0.0, 0.0);
 
     for(int i = 0; i < MAX_PLANETS; i++){
         // calculates the force     

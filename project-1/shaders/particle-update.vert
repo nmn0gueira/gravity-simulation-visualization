@@ -1,6 +1,7 @@
 
 precision mediump float;
-const int MAXBODIES = 10;
+const int MAX_PLANETS = 10;
+
 const float UNIVERSAL_GRAVITATION = 6.67*pow(10.0,-11.0); // should work
 const int MASS = 1; // every particle has a mass of 1 kg
 
@@ -14,11 +15,11 @@ uniform vec2 uOrigin;
 
 /* All planets' positions
 */
-uniform vec2 uPosition[MAXBODIES];
+uniform vec2 uPosition[MAX_PLANETS];
 
 /* All planets' radiuses
 */
-uniform float uRadius[MAXBODIES];  // em vez de MAXBODIES pode ser que se ponha a 0 ou com o numero de planetas de momento
+uniform float uRadius[MAX_PLANETS];  // em vez de MAX_PLANETS pode ser que se ponha a 0 ou com o numero de planetas de momento
 
 //gl.getUniformLocation(...,"uRadius")
 //fazer contas gravidade??

@@ -12,7 +12,7 @@ const MAX_MINLIFE = 19;
 const MIN_MINLIFE = 1;
 const MAX_MAXLIFE = 20;
 const MIN_MAXLIFE = 2;
-const MAX_PLANETS =10;
+const MAX_PLANETS = 10;
 
 let mousePosition;
 let origin = vec2(0.0,0.0);
@@ -117,7 +117,6 @@ function main(shaders)
     
     canvas.addEventListener("mousedown", function(event) {
         planetInputCenter = getCursorPosition(canvas, event);
-        console.log(1);
         
     });
 
@@ -138,8 +137,8 @@ function main(shaders)
 
         planetRadiuses.push(planetRadius);
         planetCenters.push(planetInputCenter);
-        
-        console.log(planetCenters[numberPlanets]);
+    
+        //alert(planetCenters[numberPlanets]);
         numberPlanets++;
 
     })
@@ -188,8 +187,8 @@ function main(shaders)
             data.push(life);
 
             // velocity
-            data.push(0.1*(Math.random()-0.5));
-            data.push(0.1*(Math.random()-0.5));
+            data.push(Math.cos(Math.random()-0.5));
+            data.push(Math.sin(Math.random()-0.5));
         }
 
         inParticlesBuffer = gl.createBuffer();
@@ -310,6 +309,8 @@ function main(shaders)
             // Send the corresponding values to the GLSL program
             gl.uniform2fv(uPosition, planetCenters[i]);
             gl.uniform1f(uRadius, planetRadiuses[i]);
+            //alert(planetCenters[i]);
+            //alert(planetRadiuses[i]);
         }
 
         // Setup attributes
