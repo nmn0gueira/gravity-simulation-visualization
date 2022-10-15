@@ -26,7 +26,8 @@ float planet_mass(float radius) {
 }    
 
 float bodiesDistance(vec2 v1, vec2 v2){
-   float dx = v1.x - v2.x, dy = v1.y - v2.y;
+   float dx = v1.x - v2.x;
+   float dy = v1.y - v2.y;
    return sqrt(dx*dx + dy*dy);
 }
 

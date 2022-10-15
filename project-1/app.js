@@ -21,8 +21,8 @@ let minLife = 2;
 
 //-------
 let numberPlanets=0;
-let planetInputCenter;
-let planetInputBorder;
+let planetInputCenter = vec2(0.0,0.0);
+let planetInputBorder = vec2(0.0,0.0);
 let radius;
 
 let planetRadiuses=[];
@@ -134,6 +134,7 @@ function main(shaders)
         planetInputBorder= getCursorPosition(canvas, event);
 
         const planetRadius = getRadius(planetInputCenter,planetInputBorder);
+        alert(planetRadius);
 
         planetRadiuses.push(planetRadius);
         planetCenters.push(planetInputCenter);
@@ -349,10 +350,16 @@ function main(shaders)
     }
 
     //verificar se é a funçao certa para calcular a distancia
-    function getRadius(planetInputCenter,planetInputBorder){
-        radius = length(planetInputCenter, planetInputBorder);
-     
-        return radius;
+    function getRadius(){
+        let v1 = flatten(planetInputCenter);
+        let v2 = flatten(planetInputBorder);
+
+        let dx = v1[0] - v2[0];
+        let dy = v1[1] - v2[1];
+  
+
+
+        return Math.sqrt(dx*dx + dy*dy);
     }
 }
 
