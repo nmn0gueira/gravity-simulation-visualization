@@ -13,6 +13,7 @@ const MIN_MINLIFE = 1;
 const MAX_MAXLIFE = 20;
 const MIN_MAXLIFE = 2;
 const MAX_PLANETS = 10;
+const MAX_ANGLE = Math.PI;
 
 let mousePosition;
 let origin = vec2(0.0,0.0);
@@ -20,6 +21,11 @@ let maxLife = 10;
 let minLife = 2;
 let maxVel = 0.2;
 let minVel = 0.1;
+let maxAngle = Math.PI;
+let minAngle=0.0;
+
+let alphaAngle =0.0;
+
 
 //-------
 let numberPlanets=0;
@@ -76,12 +82,29 @@ function main(shaders)
             case "PageDown":
                 break;
             case "ArrowUp":
+                if(maxAngle>=MAX_ANGLE){
+                    maxAngle=MAX_ANGLE;
+                }
+                else{
+                    MaxAngle= MaxAngle + 0.1;}
+                    if(minAngle<=0.0){
+                        minAngle=0.0;
+                    }
+
+                    else{
+                        MinAngle= MinAngle - 0.1;
+
+                    }
+
                 break;
             case "ArrowDown":
+                
                 break;
             case "ArrowLeft":
+                alphaAngle=alphaAngle+1.0
                 break;
             case "ArrowRight":
+                alphaAngle=alphaAngle - 1.0
                 break;
             case 'q': //aumentar minLife
                 if (minLife < MAX_MINLIFE) {
@@ -118,9 +141,12 @@ function main(shaders)
              
                 if (keysPressed['Shift'] && event.key == 'PageUp') {
                     alert(event.key);
+                    return;
                 }
                 else if (keysPressed['Shift']&& event.key =='PageDown'){
                     alert(event.key);
+                    return;
+                   
 
                 } 
                 else{
@@ -263,7 +289,10 @@ function main(shaders)
         const uMinLife = gl.getUniformLocation(updateProgram, "uMinLife");
 
         //const uMaxVel = gl.getUniformLocation(updateProgram, "uMaxVel");
-        //const uMinVel = gl.getUniformLocation(updateProgram, "uMinVel")
+        //const uMinVel = gl.getUniformLocation(updateProgram, "uMinVel");
+        const uMaxAngle =gl.getUniformLocation(updateProgram,"uMaxAngle");
+        const uMinAngle = gl.getUniformLocation(updateProgram,"uMinAnlge");
+        const uAlphaAngle =gl.getUniformLocation(updateProgram,"uAlphaAngle")
 
         gl.useProgram(updateProgram);
 
@@ -278,11 +307,19 @@ function main(shaders)
         //atualizar a vida minima de particulas
         gl.uniform1f(uMinLife, minLife)
 
+
+       
+
         //atualizar a velocidade maxima das particulas
         //gl.uniform2fv(uMaxVel, maxVel);
 
         //atualizar a velocidade minima das particulas
         //gl.uniform2fv(uMinVel, minVel);
+
+
+        gl.uniform1f(uMaxAngle,maxAngle);
+        gl.uniform1f(uMinAngle,minAngle);
+        gl.uniform1f(uAlphaAngle,alphaAngle);
 
         for(let i=0; i<numberPlanets; i++) {
             // Get the location of the uniforms...
