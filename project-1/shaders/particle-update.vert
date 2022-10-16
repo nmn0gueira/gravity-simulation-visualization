@@ -14,22 +14,19 @@ uniform float uDeltaTime;
 */
 uniform vec2 uOrigin;
 
-/* All planets' positions
-*/
-uniform vec2 uPosition[MAX_PLANETS];
-
 /* All planets' radiuses
 */
 uniform float uRadius[MAX_PLANETS];  // em vez de MAX_PLANETS pode ser que se ponha a 0 ou com o numero de planetas de momento
 
-//gl.getUniformLocation(...,"uRadius")
-//fazer contas gravidade??
+/* All planets' positions
+*/
+uniform vec2 uPosition[MAX_PLANETS];
 
 // Starting maximum life of a particle [2,20]
-uniform highp float uMaxLife;
+uniform float uMaxLife;
 
 // Starting minimum life of a particle [1,19]
-uniform highp float uMinLife;
+uniform float uMinLife;
 
 /* Inputs. These reflect the state of a single particle before the update. */
 
@@ -97,7 +94,7 @@ void main() {
 
    // EM VEZ DE accel, AQUI DEVIA ESTAR A FUNCAO net_force(vPosition) QUE VAI TOMAR EM CONTA FORCA GRAVITICA
    vec2 accel = net_force(vPositionOut);
-   vVelocityOut = vVelocity + vec2(0.0,0.0) * uDeltaTime;  //  v(t+h) = v(t) + F(t)/m * h 
+   vVelocityOut = vVelocity + accel * uDeltaTime;  //  v(t+h) = v(t) + F(t)/m * h 
       
    if (vAgeOut >= vLife) {
       float r1 = rand(vPosition);
