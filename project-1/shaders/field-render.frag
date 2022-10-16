@@ -33,7 +33,7 @@ float bodiesDistance(vec2 v1, vec2 v2){
 
 
 vec2 planet_force(vec2 pos, float radius) {
-     return normalize(pos-fPosition)* UNIVERSAL_GRAVITATION*((1.0*planet_mass(radius))/pow(bodiesDistance(pos,fPosition),2.0)); 
+    return normalize(pos-fPosition)* UNIVERSAL_GRAVITATION*((1.0*planet_mass(radius))/pow(bodiesDistance(pos,fPosition),2.0)); 
 }
 
 vec2 net_force(vec2 pos) {
@@ -62,9 +62,13 @@ void main() {
 
     vec2 f = net_force(pos);
 
-    float lf = length(f);//smoothstep(0.15, mod(log(length(f)),.6),0.85);
+    float lf = length(f);
 
     vec4 color = vec4(hsv2rgb(vec3(atan(f.y,f.x)/TWO_PI,1.0,1.0)), lf); //sin(lf) ou (1.0-1.0/lf)
+
+    if(mod(log(abs(lf)), 0.5) < 0.05) {
+        color = vec4(0.0, 0.0, 0.0, 1.0);
+    }
     
     gl_FragColor = vec4(color);
 }

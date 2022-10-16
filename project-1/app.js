@@ -6,7 +6,7 @@ let inParticlesBuffer, outParticlesBuffer, quadBuffer;
 
 // Particle system constants
 
-// Total number of particles, PARA TESTAR, PARA JA TEMOS 1000
+// Total number of particles
 const N_PARTICLES = 100000; // O NUMERO DE PARTICULAS TEM DE SER 1 MILHAO (10 ELEVADO A 6) OU 100000
 const MAX_MINLIFE = 19;
 const MIN_MINLIFE = 1;
@@ -36,6 +36,7 @@ let time = undefined;
 
 function main(shaders)
 {
+
     // Generate the canvas element to fill the entire page
     const canvas = document.createElement("canvas");
     document.body.appendChild(canvas);

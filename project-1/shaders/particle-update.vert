@@ -97,13 +97,16 @@ void main() {
 
    // EM VEZ DE accel, AQUI DEVIA ESTAR A FUNCAO net_force(vPosition) QUE VAI TOMAR EM CONTA FORCA GRAVITICA
    vec2 accel = net_force(vPositionOut);
-   vVelocityOut = vVelocity + accel * uDeltaTime;  //  v(t+h) = v(t) + F(t)/m * h 
+   vVelocityOut = vVelocity + vec2(0.0,0.0) * uDeltaTime;  //  v(t+h) = v(t) + F(t)/m * h 
       
    if (vAgeOut >= vLife) {
+      float r1 = rand(vPosition);
+      float r2 = rand(vPosition*uDeltaTime);
+
       vAgeOut = 0.0;
       vPositionOut = uOrigin;
-      vLifeOut = uMinLife+rand(vec2(vAge,vPosition))*(uMaxLife-uMinLife); // n tenho a certeza se randomiza de maneira diferente para cada particula
-      vVelocityOut = vVelocity;
+      vLifeOut = uMinLife+r2*(uMaxLife-uMinLife);
+      vVelocityOut = vVelocity; // calcular isto de forma semelhante a vida
       //mandar as particulas numa direçao aleatoria entre dois parametros
    }
 }
