@@ -28,6 +28,12 @@ uniform float uMaxLife;
 // Starting minimum life of a particle [1,19]
 uniform float uMinLife;
 
+uniform float uMaxBeta;
+
+uniform float uMinBeta;
+
+uniform float uAlpha;
+
 /* Inputs. These reflect the state of a single particle before the update. */
 
 
@@ -92,12 +98,10 @@ highp float rand(vec2 co)
 void main() {
 
    /* Update parameters according to our simple rules.*/
-   float alpha = 0.0;
-   //float beta = PI;
 
    //float theta = uMinTheta + rand(vPosition + uDeltaTime)*(uMaxTheta - uMinTheta);
    //ao aumentar o minTheta diminui o maxTheta
-   float theta = 0.0 + rand(vPosition + uDeltaTime)*(2.0*PI - 0.0) + alpha;
+   float theta = uMinBeta + rand(vPosition + uDeltaTime)*(2.0*uMaxBeta - uMinBeta) + uAlpha;
    float x = cos(theta);
    float y = sin(theta);
    
