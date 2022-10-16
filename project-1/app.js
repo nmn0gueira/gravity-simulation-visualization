@@ -83,15 +83,13 @@ function main(shaders)
             case "PageDown":
                 break;
             case "ArrowUp":
-                if(maxBeta < MAX_BETA_ANGLE) {
-                    maxBeta += Math.PI*0.01;
-                    minBeta -= Math.PI*0.01;
+                if(minBeta < MAX_BETA_ANGLE) {
+                    minBeta += Math.PI*0.01;
                 }
                 break;
             case "ArrowDown":
-                if (maxBeta > MIN_BETA_ANGLE) { // FALTA UMA CONDICAO AQUI PARA O MIN NAO SER MAIOR QUE O MAX
-                    minBeta += Math.PI*0.01;
-                    maxBeta -= Math.PI*0.01;
+                if (minBeta > MIN_BETA_ANGLE) { // FALTA UMA CONDICAO AQUI PARA O MIN NAO SER MAIOR QUE O MAX
+                    minBeta -= Math.PI*0.01;
                 }
                 break;
             case "ArrowLeft":
@@ -148,6 +146,9 @@ function main(shaders)
                 }
             
             });
+            window.addEventListener('keyup', (event) => {
+                delete keysPressed[event.key];
+             });
 
               
            
@@ -170,6 +171,7 @@ function main(shaders)
     });
 
     canvas.addEventListener("mouseup", function(event) {
+        //SO DESENHAR ATE 10 PLANETAS
         planetInputBorder= getCursorPosition(canvas, event);
 
         const planetRadius = getRadius(planetInputCenter,planetInputBorder);
@@ -213,8 +215,8 @@ function main(shaders)
 
         for(let i=0; i<nParticles; ++i) {
             // position
-            const x = 0.0;//(Math.random() - 0.5) * 2*1.5;
-            const y = 0.0;//(Math.random() - 0.5) * 2*1.5*(canvas.height/canvas.width);
+            const x = (Math.random() - 0.5) * 2*1.5;
+            const y = (Math.random() - 0.5) * 2*1.5*(canvas.height/canvas.width);
 
             data.push(x); data.push(y);
             
@@ -222,16 +224,17 @@ function main(shaders)
             data.push(0.0);
 
             // life
-            const life = 6.0 + Math.random();
+            const life = 6.0 + Math.random(); // mudar isto
             data.push(life);
 
             // velocity
-            data.push(0.1*(Math.random() - 0.5));
-            data.push(0.1*(Math.random() - 0.5));
-            //let rand = Math.random()*(2*Math.PI)+1; 
-            //data.push(0.1*(Math.cos(rand)/Math.sin(rand)));
-            //rand = Math.random()*(2*Math.PI)+1;
-            //data.push(0.1*(Math.sin(rand)/Math.cos(rand)));
+            let theta = minBeta + Math.random()*(2.0*maxBeta - minBeta) + alpha;
+            let cos = Math.cos(theta);
+            let sin = Math.sin(theta);
+
+            //let velocity = vec2(x, y) * (0.1 + r1 * (0.2 - 0.1));
+            data.push(cos* (0.1 + Math.random() * (0.2 - 0.1))); //por os valores minimos e maximos de vel
+            data.push(sin* (0.1 + Math.random() * (0.2 - 0.1))); //por os valores minimos e maximos de vel
         }
 
         inParticlesBuffer = gl.createBuffer();
@@ -284,7 +287,7 @@ function main(shaders)
 
         //const uMaxVel = gl.getUniformLocation(updateProgram, "uMaxVel");
         //const uMinVel = gl.getUniformLocation(updateProgram, "uMinVel");
-        const uMaxBeta =gl.getUniformLocation(updateProgram,"uMaxBeta");
+        //const uMaxBeta =gl.getUniformLocation(updateProgram,"uMaxBeta");
         const uMinBeta = gl.getUniformLocation(updateProgram,"uMinBeta");
         const uAlpha =gl.getUniformLocation(updateProgram,"uAlpha")
 
@@ -309,7 +312,7 @@ function main(shaders)
 
         //atualizar a velocidade minima das particulas
         //gl.uniform2fv(uMinVel, minVel);
-        gl.uniform1f(uMaxBeta,maxBeta);
+        //gl.uniform1f(uMaxBeta,maxBeta);
         gl.uniform1f(uMinBeta,minBeta);
         gl.uniform1f(uAlpha,alpha);
 

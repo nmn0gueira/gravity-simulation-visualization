@@ -28,8 +28,6 @@ uniform float uMaxLife;
 // Starting minimum life of a particle [1,19]
 uniform float uMinLife;
 
-uniform float uMaxBeta;
-
 uniform float uMinBeta;
 
 uniform float uAlpha;
@@ -100,8 +98,8 @@ void main() {
    /* Update parameters according to our simple rules.*/
 
    //float theta = uMinTheta + rand(vPosition + uDeltaTime)*(uMaxTheta - uMinTheta);
-   //ao aumentar o minTheta diminui o maxTheta e vice versa
-   float theta = uMinBeta + rand(vPosition + uDeltaTime)*(2.0*uMaxBeta - uMinBeta) + uAlpha;
+   //ao aumentar o minTheta diminui o maxTheta e vice versa, POR O MINBETA A MULTIPLICAR POR 2(?)
+   float theta = uMinBeta + rand(vPosition + uDeltaTime)*2.0*(PI - uMinBeta) + uAlpha; 
    float x = cos(theta);
    float y = sin(theta);
 
