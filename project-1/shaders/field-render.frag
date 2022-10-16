@@ -43,7 +43,8 @@ vec2 net_force(vec2 pos) {
         // calculates the force     
          force = force + planet_force(uPosition[i], uRadius[i]);
     }
-   return force + pos;
+
+    return force;
 }
 
 
@@ -59,11 +60,11 @@ vec3 hsv2rgb(vec3 c)
 void main() {
     vec2 pos = fPosition;
 
-    vec2 f = net_force(pos);  // nao sei se e vec3 ou vec2
+    vec2 f = net_force(pos);
 
-    float lf = smoothstep(0.15, mod(log(length(f)),.6),0.85);
+    float lf = length(f);//smoothstep(0.15, mod(log(length(f)),.6),0.85);
 
-    vec4 color = vec4(hsv2rgb(vec3(atan(f.y,f.x)/TWO_PI,1.0,1.0)), sin(lf));
+    vec4 color = vec4(hsv2rgb(vec3(atan(f.y,f.x)/TWO_PI,1.0,1.0)), lf); //sin(lf) ou (1.0-1.0/lf)
     
     gl_FragColor = vec4(color);
 }

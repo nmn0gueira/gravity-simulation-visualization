@@ -18,12 +18,13 @@ let mousePosition;
 let origin = vec2(0.0,0.0);
 let maxLife = 10;
 let minLife = 2;
+let maxVel = 0.2;
+let minVel = 0.1;
 
 //-------
 let numberPlanets=0;
 let planetInputCenter = vec2(0.0,0.0);
 let planetInputBorder = vec2(0.0,0.0);
-let radius;
 
 let planetRadiuses=[];
 let planetCenters=[];
@@ -187,12 +188,12 @@ function main(shaders)
             data.push(life);
 
             // velocity
-            //data.push(0.1*(Math.random() - 0.5));
-            //data.push(0.1*(Math.random() - 0.5));
-            let rand = Math.random()*(2*Math.PI)+1; 
-            data.push(0.1*(Math.cos(rand)/Math.sin(rand)));
-            rand = Math.random()*(2*Math.PI)+1;
-            data.push(0.1*(Math.sin(rand)/Math.cos(rand)));
+            data.push(0.1*(Math.random() - 0.5));
+            data.push(0.1*(Math.random() - 0.5));
+            //let rand = Math.random()*(2*Math.PI)+1; 
+            //data.push(0.1*(Math.cos(rand)/Math.sin(rand)));
+            //rand = Math.random()*(2*Math.PI)+1;
+            //data.push(0.1*(Math.sin(rand)/Math.cos(rand)));
         }
 
         inParticlesBuffer = gl.createBuffer();
@@ -264,6 +265,17 @@ function main(shaders)
 
         //atualizar a velocidade minima das particulas
         //gl.uniform2fv(uMinVel, minVel);
+
+        for(let i=0; i<numberPlanets; i++) {
+            // Get the location of the uniforms...
+            const uPosition = gl.getUniformLocation(updateProgram, "uPosition[" + i + "]");
+            const uRadius = gl.getUniformLocation(updateProgram, "uRadius[" + i + "]");
+            // Send the corresponding values to the GLSL program
+            gl.uniform2fv(uPosition, planetCenters[i]);
+            gl.uniform1f(uRadius, planetRadiuses[i]);
+            //alert(planetCenters[i]);
+            //alert(planetRadiuses[i]);
+        }
     
         // Setup attributes
         const vPosition = gl.getAttribLocation(updateProgram, "vPosition");
@@ -356,8 +368,6 @@ function main(shaders)
         let dx = v1[0] - v2[0];
         let dy = v1[1] - v2[1];
   
-
-
         return Math.sqrt(dx*dx + dy*dy);
     }
 }
