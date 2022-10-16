@@ -20,7 +20,7 @@ let maxLife = 10;
 let minLife = 2;
 let maxVel = 0.2;
 let minVel = 0.1;
-
+let val = 0;
 //-------
 let numberPlanets=0;
 let planetInputCenter = vec2(0.0,0.0);

@@ -64,7 +64,7 @@ void main() {
 
     float lf = length(f);
 
-    vec4 color = vec4(hsv2rgb(vec3(atan(f.y,f.x)/TWO_PI,1.0,1.0)), lf); //sin(lf) ou (1.0-1.0/lf)
+    vec4 color = vec4(hsv2rgb(vec3(atan(f.y,f.x)/TWO_PI,1.0,1.0)), lf);  //(1.0-1.0/lf)
 
     if(mod(log(abs(lf)), 0.5) < 0.05) {
         color = vec4(0.0, 0.0, 0.0, 1.0);

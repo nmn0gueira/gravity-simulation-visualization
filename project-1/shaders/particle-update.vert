@@ -58,6 +58,10 @@ float bodiesDistance(vec2 v1, vec2 v2){
 
 
 vec2 planet_force(vec2 planetPos, float radius, vec2 particlePos) {
+   if (bodiesDistance(planetPos,particlePos) <= radius) {
+      vAgeOut = vLife;
+   }
+
    return normalize(planetPos-particlePos)* UNIVERSAL_GRAVITATION*((1.0*planet_mass(radius))/pow(bodiesDistance(planetPos,particlePos),2.0)); 
 }
 
@@ -88,6 +92,18 @@ highp float rand(vec2 co)
 void main() {
 
    /* Update parameters according to our simple rules.*/
+   float alpha = 0.0;
+   //float beta = PI;
+
+   //float theta = uMinTheta + rand(vPosition + uDeltaTime)*(uMaxTheta - uMinTheta);
+   //ao aumentar o minTheta diminui o maxTheta
+   float theta = 0.0 + rand(vPosition + uDeltaTime)*(2.0*PI - 0.0) + alpha;
+   float x = cos(theta);
+   float y = sin(theta);
+   
+
+   //float angle = alpha + beta - rand(vPosition*uDeltaTime)*2.0*beta;
+
    vPositionOut = vPosition + vVelocity * uDeltaTime; // p(t+h) = p(t) + v(t) * h 
    vAgeOut = vAge + uDeltaTime;
    vLifeOut = vLife;
@@ -103,7 +119,7 @@ void main() {
       vAgeOut = 0.0;
       vPositionOut = uOrigin;
       vLifeOut = uMinLife+r2*(uMaxLife-uMinLife);
-      vVelocityOut = vVelocity; // calcular isto de forma semelhante a vida
-      //mandar as particulas numa direçao aleatoria entre dois parametros
+      vVelocityOut = vec2(x, y) * (0.1 + rand(vPosition) * (0.2 - 0.1));  // calcular isto de forma semelhante a vida 
+      //vVelocityOut = vec2(x, y) * (velocityMin + rand(vPosition) * (velocityMax - velocityMin));
    }
 }
