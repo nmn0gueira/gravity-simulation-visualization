@@ -117,22 +117,22 @@ function main(shaders)
             case "ArrowRight":
                 alpha -= Math.PI*0.01;
                 break;
-            case 'q': //aumentar minLife
+            case 'q':
                 if (minLife < MAX_MINLIFE) {
                     if(minLife == maxLife-1) 
                     maxLife++
                 minLife++;
                 }        
                 break;
-            case 'a': //diminuir minLife
+            case 'a':
                 if (minLife > MIN_MINLIFE)
                     minLife--;
                 break;
-            case 'w': //aumentar maxLife
+            case 'w':
                 if (maxLife < MAX_MAXLIFE)
                     maxLife++;
                 break;
-            case 's': //diminuir maxLife
+            case 's':
                 if (maxLife > MIN_MAXLIFE) {
                     if (maxLife == minLife+1)
                     minLife--;
