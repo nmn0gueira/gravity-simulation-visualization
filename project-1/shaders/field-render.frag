@@ -5,7 +5,7 @@ const float TWO_PI = 2.0*PI;
 const int MAX_PLANETS=10;
 const float MEDIUM_DENSITY = 5.51*pow(10.0,3.0); 
 const float SCALE_FACTOR = 6.371 * pow(10.0,6.0);
-const float UNIVERSAL_GRAVITATION = 6.67*pow(10.0,-11.0); // should work
+const float UNIVERSAL_GRAVITATION = 6.67*pow(10.0,-11.0);
 
 uniform float uRadius[MAX_PLANETS];
 uniform vec2 uPosition[MAX_PLANETS];
@@ -36,7 +36,7 @@ vec2 planet_force(vec2 pos, float radius) {
     return normalize(pos-fPosition)* UNIVERSAL_GRAVITATION*((1.0*planet_mass(radius))/pow(bodiesDistance(pos,fPosition),2.0)); 
 }
 
-vec2 net_force(vec2 pos) {
+vec2 net_force() {
     vec2 force = vec2(0.0, 0.0);
 
     for(int i = 0; i < MAX_PLANETS; i++){
@@ -58,13 +58,12 @@ vec3 hsv2rgb(vec3 c)
 
 
 void main() {
-    vec2 pos = fPosition;
 
-    vec2 f = net_force(pos);
+    vec2 f = net_force();
 
     float lf = length(f);
 
-    vec4 color = vec4(hsv2rgb(vec3(atan(f.y,f.x)/TWO_PI,1.0,1.0)), lf);  //(1.0-1.0/lf)
+    vec4 color = vec4(hsv2rgb(vec3(atan(f.y,f.x)/TWO_PI,1.0,1.0)), lf);
 
     if(mod(log(abs(lf)), 0.5) < 0.05) {
         color = vec4(0.0, 0.0, 0.0, 1.0);

@@ -22,18 +22,22 @@ uniform float uRadius[MAX_PLANETS];
 */
 uniform vec2 uPosition[MAX_PLANETS];
 
-// Starting maximum life of a particle [2,20]
+// Maximum life of a particle [2,20]
 uniform float uMaxLife;
 
-// Starting minimum life of a particle [1,19]
+// Minimum life of a particle [1,19]
 uniform float uMinLife;
 
+// Maximum velocity (0.2)
 uniform float uMaxVel;
 
+// Minimum velocity (0.1)
 uniform float uMinVel;
 
+// Beta angle
 uniform float uBeta;
 
+// Alpha angle
 uniform float uAlpha;
 
 /* Inputs. These reflect the state of a single particle before the update. */
@@ -68,6 +72,7 @@ float bodiesDistance(vec2 v1, vec2 v2){
 vec2 planet_force(vec2 planetPos, float radius, vec2 particlePos) {
    if (bodiesDistance(planetPos,particlePos) <= radius) {
       vAgeOut = vLife;
+      return vec2(0.0,0.0);
    }
 
    return normalize(planetPos-particlePos)* UNIVERSAL_GRAVITATION*((1.0*planet_mass(radius))/pow(bodiesDistance(planetPos,particlePos),2.0)); 
@@ -100,8 +105,9 @@ highp float rand(vec2 co)
 void main() {
 
    /* Update parameters according to our simple rules.*/
+   float r1 = rand(vPosition + uDeltaTime);
 
-   float theta = uBeta + rand(vPosition + uDeltaTime)*2.0*(PI - uBeta) + uAlpha; 
+   float theta = uBeta + r1 *2.0*(PI - uBeta) + uAlpha; 
    float x = cos(theta);
    float y = sin(theta);
 
@@ -113,8 +119,8 @@ void main() {
    vVelocityOut = vVelocity + accel * uDeltaTime;  //  v(t+h) = v(t) + F(t)/m * h 
       
    if (vAgeOut >= vLife) {
-      float r1 = rand(vPosition);
-      float r2 = rand(vPosition*uDeltaTime);
+      float r2 = rand(vPosition);
+      float r3 = rand(vPosition*uDeltaTime);
 
       vAgeOut = 0.0;
       vPositionOut = uOrigin;

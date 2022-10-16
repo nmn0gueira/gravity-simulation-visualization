@@ -9,7 +9,6 @@ attribute vec2 vVelocity;
 
 varying float fLeft;
 
-//converter de World Space [-1.5, 1.5] para Clip Space[-1,1] (ja ta feito)
 void main() {
   gl_PointSize = 2.0;
   fLeft = vAge;

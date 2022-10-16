@@ -175,7 +175,6 @@ function main(shaders)
             planetRadiuses.push(planetRadius);
             planetCenters.push(planetInputCenter);
     
-            //alert(planetCenters[numberPlanets]);
             numberPlanets++;
         }
 
