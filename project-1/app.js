@@ -7,7 +7,7 @@ let inParticlesBuffer, outParticlesBuffer, quadBuffer;
 // Particle system constants
 
 // Total number of particles
-const N_PARTICLES = 100000; // O NUMERO DE PARTICULAS TEM DE SER 1 MILHAO (10 ELEVADO A 6) OU 100000
+const N_PARTICLES = 100000;
 const MAX_MINLIFE = 19;
 const MIN_MINLIFE = 1;
 const MAX_MAXLIFE = 20;
@@ -189,7 +189,7 @@ function main(shaders)
         const my = event.offsetY;
 
         const x = ((mx / canvas.width * 2) - 1)*1.5;
-        const y = (((canvas.height - my)/canvas.height * 2) -1)*1.5*(canvas.height/canvas.width); //alteraçao a seguir ao 1.5
+        const y = (((canvas.height - my)/canvas.height * 2) -1)*1.5*(canvas.height/canvas.width);
 
         return vec2(x,y);
     }
@@ -221,7 +221,7 @@ function main(shaders)
             data.push(0.0);
 
             // life
-            const life = minLife+Math.random()*(maxLife-minLife); // mudar isto
+            const life = minLife+Math.random()*(maxLife-minLife); 
             data.push(life);
 
             // velocity
@@ -229,9 +229,8 @@ function main(shaders)
             let cos = Math.cos(theta);
             let sin = Math.sin(theta);
 
-            //let velocity = vec2(x, y) * (0.1 + r1 * (0.2 - 0.1));
-            data.push(cos* (0.1 + Math.random() * (maxVel - minVel))); //mudar para os valores minimos e maximos de vel
-            data.push(sin* (0.1 + Math.random() * (maxVel - minVel))); //mudar os valores minimos e maximos de vel
+            data.push(cos* (0.1 + Math.random() * (maxVel - minVel))); 
+            data.push(sin* (0.1 + Math.random() * (maxVel - minVel))); 
         }
 
         inParticlesBuffer = gl.createBuffer();
@@ -284,7 +283,7 @@ function main(shaders)
 
         const uMaxVel = gl.getUniformLocation(updateProgram, "uMaxVel");
         const uMinVel = gl.getUniformLocation(updateProgram, "uMinVel");
-        //const uMaxBeta =gl.getUniformLocation(updateProgram,"uMaxBeta");
+    
         const uBeta = gl.getUniformLocation(updateProgram,"uBeta");
         const uAlpha =gl.getUniformLocation(updateProgram,"uAlpha")
 
@@ -292,29 +291,26 @@ function main(shaders)
 
         gl.uniform1f(uDeltaTime, deltaTime);
 
-        //atualizar a posição do cursor
-        gl.uniform2fv(uOrigin, origin); // isto so acontece clicando no shift
+        //update point of origin for new particles
+        gl.uniform2fv(uOrigin, origin);
 
-        //atualizar a vida maxima de particulas
+        //update maximum life a particle can have
         gl.uniform1f(uMaxLife, maxLife);
 
-        //atualizar a vida minima de particulas
-        gl.uniform1f(uMinLife, minLife)
+        //update minimum life a particle can have
+        gl.uniform1f(uMinLife, minLife) 
 
-
-       
-
-        //atualizar a velocidade maxima das particulas
+        //update maximum velocity a particle can have
         gl.uniform1f(uMaxVel, maxVel);
 
-        //atualizar a velocidade minima das particulas
+        //update minimum velocity a particle can have
         gl.uniform1f(uMinVel, minVel);
 
-
-
-        //gl.uniform1f(uMaxBeta,maxBeta);
-        gl.uniform1f(uBeta,beta);
+        //update angle that indicates the central directon of velocity for new particles
         gl.uniform1f(uAlpha,alpha);
+
+        //update maximum direction variation of new particles
+        gl.uniform1f(uBeta,beta);
 
         for(let i=0; i<numberPlanets; i++) {
             // Get the location of the uniforms...
@@ -323,8 +319,6 @@ function main(shaders)
             // Send the corresponding values to the GLSL program
             gl.uniform2fv(uPosition, planetCenters[i]);
             gl.uniform1f(uRadius, planetRadiuses[i]);
-            //alert(planetCenters[i]);
-            //alert(planetRadiuses[i]);
         }
     
         // Setup attributes
@@ -375,8 +369,6 @@ function main(shaders)
             // Send the corresponding values to the GLSL program
             gl.uniform2fv(uPosition, planetCenters[i]);
             gl.uniform1f(uRadius, planetRadiuses[i]);
-            //alert(planetCenters[i]);
-            //alert(planetRadiuses[i]);
         }
 
         // Setup attributes
@@ -410,7 +402,6 @@ function main(shaders)
         gl.drawArrays(gl.POINTS, 0, nParticles);
     }
 
-    //verificar se é a funçao certa para calcular a distancia
     function getRadius(){
         let v1 = flatten(planetInputCenter);
         let v2 = flatten(planetInputBorder);
