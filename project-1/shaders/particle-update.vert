@@ -28,7 +28,11 @@ uniform float uMaxLife;
 // Starting minimum life of a particle [1,19]
 uniform float uMinLife;
 
-uniform float uMinBeta;
+uniform float uMaxVel;
+
+uniform float uMinVel;
+
+uniform float uBeta;
 
 uniform float uAlpha;
 
@@ -99,7 +103,7 @@ void main() {
 
    //float theta = uMinTheta + rand(vPosition + uDeltaTime)*(uMaxTheta - uMinTheta);
    //ao aumentar o minTheta diminui o maxTheta e vice versa, POR O MINBETA A MULTIPLICAR POR 2(?)
-   float theta = uMinBeta + rand(vPosition + uDeltaTime)*2.0*(PI - uMinBeta) + uAlpha; 
+   float theta = uBeta + rand(vPosition + uDeltaTime)*2.0*(PI - uBeta) + uAlpha; 
    float x = cos(theta);
    float y = sin(theta);
 
@@ -118,7 +122,6 @@ void main() {
       vAgeOut = 0.0;
       vPositionOut = uOrigin;
       vLifeOut = uMinLife+r2*(uMaxLife-uMinLife);
-      vVelocityOut = vec2(x, y) * (0.1 + r1 * (0.2 - 0.1));  // calcular isto de forma semelhante a vida 
-      //vVelocityOut = vec2(x, y) * (velocityMin + rand(vPosition) * (velocityMax - velocityMin));
+      vVelocityOut = vec2(x, y) * (uMinVel + rand(vPosition) * (uMaxVel - uMinVel));
    }
 }

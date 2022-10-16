@@ -22,8 +22,7 @@ let maxLife = 10;
 let minLife = 2;
 let maxVel = 0.2;
 let minVel = 0.1;
-let maxBeta = Math.PI;
-let minBeta = 0.0;
+let beta = 0.0;
 let alpha = 0.0;
 
 
@@ -78,36 +77,38 @@ function main(shaders)
         console.log(event.key);
         switch(event.key) {
             case "PageUp":
-                if(event.shiftKey)
-                {if(minVel == maxVel-0.1) {
-                    maxVel=maxVel+0.1;
-                    minVel=minVel+0.1;}
-                    else{
-                        minVel++;
-                    }}
+                if(event.shiftKey) {
+                    if(minVel == maxVel-0.1)
+                        maxVel++;
+    
+                    minVel++;             
+                }
                 else{
-                maxVel=maxVel+0.1;}
+                    maxVel++;
+                }
                 break;
             case "PageDown":
                 if(event.shiftKey){
-                    if (minVel==0.1){}
-                           else {
-                           minVel=minVel+0.1;
-                        } 
-                        }  
-                else
-                if(minVel==maxVel-0.1){
-                    maxVel=maxVel-0.1;
-                    minVel=minVel-0.1;
+                    if (minVel>0.1)
+                        minVel--;
+                    
+                    }  
+                else {
+                    if(maxVel>0.2){
+                        if (maxVel == minVel + 0.1)
+                            minVel--;
+                    maxVel--;    
+                    }
                 }
+                break;
             case "ArrowUp":
-                if(minBeta < MAX_BETA_ANGLE) {
-                    minBeta += Math.PI*0.01;
+                if(beta < MAX_BETA_ANGLE) {
+                    beta += Math.PI*0.01;
                 }
                 break;
             case "ArrowDown":
-                if (minBeta > MIN_BETA_ANGLE) { // FALTA UMA CONDICAO AQUI PARA O MIN NAO SER MAIOR QUE O MAX
-                    minBeta -= Math.PI*0.01;
+                if (beta > MIN_BETA_ANGLE) {
+                    beta -= Math.PI*0.01;
                 }
                 break;
             case "ArrowLeft":
@@ -167,16 +168,15 @@ function main(shaders)
 
     canvas.addEventListener("mouseup", function(event) {
         if (numberPlanets < MAX_PLANETS) {
-        //SO DESENHAR ATE 10 PLANETAS
-        planetInputBorder= getCursorPosition(canvas, event);
+            planetInputBorder= getCursorPosition(canvas, event);
 
-        const planetRadius = getRadius(planetInputCenter,planetInputBorder);
+            const planetRadius = getRadius(planetInputCenter,planetInputBorder);
 
-        planetRadiuses.push(planetRadius);
-        planetCenters.push(planetInputCenter);
+            planetRadiuses.push(planetRadius);
+            planetCenters.push(planetInputCenter);
     
-        //alert(planetCenters[numberPlanets]);
-        numberPlanets++;
+            //alert(planetCenters[numberPlanets]);
+            numberPlanets++;
         }
 
     })
@@ -225,13 +225,13 @@ function main(shaders)
             data.push(life);
 
             // velocity
-            let theta = minBeta + Math.random()*2.0*(MAX_BETA_ANGLE - minBeta) + alpha;
+            let theta = beta + Math.random()*2.0*(MAX_BETA_ANGLE - beta) + alpha;
             let cos = Math.cos(theta);
             let sin = Math.sin(theta);
 
             //let velocity = vec2(x, y) * (0.1 + r1 * (0.2 - 0.1));
-            data.push(cos* (0.1 + Math.random() * (0.2 - 0.1))); //mudar para os valores minimos e maximos de vel
-            data.push(sin* (0.1 + Math.random() * (0.2 - 0.1))); //mudar os valores minimos e maximos de vel
+            data.push(cos* (0.1 + Math.random() * (maxVel - minVel))); //mudar para os valores minimos e maximos de vel
+            data.push(sin* (0.1 + Math.random() * (maxVel - minVel))); //mudar os valores minimos e maximos de vel
         }
 
         inParticlesBuffer = gl.createBuffer();
@@ -285,7 +285,7 @@ function main(shaders)
         const uMaxVel = gl.getUniformLocation(updateProgram, "uMaxVel");
         const uMinVel = gl.getUniformLocation(updateProgram, "uMinVel");
         //const uMaxBeta =gl.getUniformLocation(updateProgram,"uMaxBeta");
-        const uMinBeta = gl.getUniformLocation(updateProgram,"uMinBeta");
+        const uBeta = gl.getUniformLocation(updateProgram,"uBeta");
         const uAlpha =gl.getUniformLocation(updateProgram,"uAlpha")
 
         gl.useProgram(updateProgram);
@@ -313,7 +313,7 @@ function main(shaders)
 
 
         //gl.uniform1f(uMaxBeta,maxBeta);
-        gl.uniform1f(uMinBeta,minBeta);
+        gl.uniform1f(uBeta,beta);
         gl.uniform1f(uAlpha,alpha);
 
         for(let i=0; i<numberPlanets; i++) {
