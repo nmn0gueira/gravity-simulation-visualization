@@ -112,7 +112,24 @@ function main(shaders)
                 drawPoints  = !drawPoints;
                 break; 
             case 'Shift':
-               origin = mousePosition; 
+            let keysPressed = {};
+            window.addEventListener('keydown', function(event)  {
+                keysPressed[event.key] = true;
+             
+                if (keysPressed['Shift'] && event.key == 'PageUp') {
+                    alert(event.key);
+                }
+                else if (keysPressed['Shift']&& event.key =='PageDown'){
+                    alert(event.key);
+
+                } 
+                else{
+                    origin = mousePosition; 
+                }
+            
+            });
+
+              
            
         }
     })
