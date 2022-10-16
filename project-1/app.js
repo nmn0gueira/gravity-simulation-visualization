@@ -78,9 +78,28 @@ function main(shaders)
         console.log(event.key);
         switch(event.key) {
             case "PageUp":
+                if(event.shiftKey)
+                {if(minVel == maxVel-0.1) {
+                    maxVel=maxVel+0.1;
+                    minVel=minVel+0.1;}
+                    else{
+                        minVel++;
+                    }}
+                else{
+                maxVel=maxVel+0.1;}
                 break;
             case "PageDown":
-                break;
+                if(event.shiftKey){
+                    if (minVel==0.1){}
+                           else {
+                           minVel=minVel+0.1;
+                        } 
+                        }  
+                else
+                if(minVel==maxVel-0.1){
+                    maxVel=maxVel-0.1;
+                    minVel=minVel-0.1;
+                }
             case "ArrowUp":
                 if(minBeta < MAX_BETA_ANGLE) {
                     minBeta += Math.PI*0.01;
@@ -263,8 +282,8 @@ function main(shaders)
         const uMaxLife = gl.getUniformLocation(updateProgram, "uMaxLife");
         const uMinLife = gl.getUniformLocation(updateProgram, "uMinLife");
 
-        //const uMaxVel = gl.getUniformLocation(updateProgram, "uMaxVel");
-        //const uMinVel = gl.getUniformLocation(updateProgram, "uMinVel");
+        const uMaxVel = gl.getUniformLocation(updateProgram, "uMaxVel");
+        const uMinVel = gl.getUniformLocation(updateProgram, "uMinVel");
         //const uMaxBeta =gl.getUniformLocation(updateProgram,"uMaxBeta");
         const uMinBeta = gl.getUniformLocation(updateProgram,"uMinBeta");
         const uAlpha =gl.getUniformLocation(updateProgram,"uAlpha")
@@ -286,10 +305,13 @@ function main(shaders)
        
 
         //atualizar a velocidade maxima das particulas
-        //gl.uniform2fv(uMaxVel, maxVel);
+        gl.uniform1f(uMaxVel, maxVel);
 
         //atualizar a velocidade minima das particulas
-        //gl.uniform2fv(uMinVel, minVel);
+        gl.uniform1f(uMinVel, minVel);
+
+
+
         //gl.uniform1f(uMaxBeta,maxBeta);
         gl.uniform1f(uMinBeta,minBeta);
         gl.uniform1f(uAlpha,alpha);
