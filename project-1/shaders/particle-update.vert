@@ -4,7 +4,7 @@ const float PI = 3.14151;
 const int MAX_PLANETS = 10;
 const float MEDIUM_DENSITY = 5.51*pow(10.0,3.0); 
 const float SCALE_FACTOR = 6.371 * pow(10.0,6.0);
-const float UNIVERSAL_GRAVITATION = 6.67*pow(10.0,-11.0); // should work
+const float UNIVERSAL_GRAVITATION = 6.67*pow(10.0,-11.0);
 
 /* Number of seconds (possibly fractional) that has passed since the last
    update step. */
@@ -16,7 +16,7 @@ uniform vec2 uOrigin;
 
 /* All planets' radiuses
 */
-uniform float uRadius[MAX_PLANETS];  // em vez de MAX_PLANETS pode ser que se ponha a 0 ou com o numero de planetas de momento
+uniform float uRadius[MAX_PLANETS]; 
 
 /* All planets' positions
 */
@@ -101,8 +101,6 @@ void main() {
 
    /* Update parameters according to our simple rules.*/
 
-   //float theta = uMinTheta + rand(vPosition + uDeltaTime)*(uMaxTheta - uMinTheta);
-   //ao aumentar o minTheta diminui o maxTheta e vice versa, POR O MINBETA A MULTIPLICAR POR 2(?)
    float theta = uBeta + rand(vPosition + uDeltaTime)*2.0*(PI - uBeta) + uAlpha; 
    float x = cos(theta);
    float y = sin(theta);
@@ -111,7 +109,6 @@ void main() {
    vAgeOut = vAge + uDeltaTime;
    vLifeOut = vLife;
 
-   // EM VEZ DE accel, AQUI DEVIA ESTAR A FUNCAO net_force(vPosition) QUE VAI TOMAR EM CONTA FORCA GRAVITICA
    vec2 accel = net_force(vPositionOut);
    vVelocityOut = vVelocity + accel * uDeltaTime;  //  v(t+h) = v(t) + F(t)/m * h 
       
