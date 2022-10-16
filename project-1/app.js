@@ -25,6 +25,7 @@ let minVel = 0.1;
 let maxBeta = Math.PI;
 let minBeta = 0.0;
 let alpha = 0.0;
+let test = 0;
 
 
 //-------
@@ -83,21 +84,21 @@ function main(shaders)
                 break;
             case "ArrowUp":
                 if(maxBeta < MAX_BETA_ANGLE) {
-                    maxBeta += 0.1;
-                    minBeta -= 0.1;
+                    maxBeta += Math.PI*0.01;
+                    minBeta -= Math.PI*0.01;
                 }
                 break;
             case "ArrowDown":
-                if (maxBeta > MIN_BETA_ANGLE) {
-                    minBeta += 0.1;
-                    maxBeta -= 0.1;
+                if (maxBeta > MIN_BETA_ANGLE) { // FALTA UMA CONDICAO AQUI PARA O MIN NAO SER MAIOR QUE O MAX
+                    minBeta += Math.PI*0.01;
+                    maxBeta -= Math.PI*0.01;
                 }
                 break;
             case "ArrowLeft":
-                alpha=alpha+1.0;
+                alpha += Math.PI*0.01;
                 break;
             case "ArrowRight":
-                alpha=alpha-1.0;
+                alpha -= Math.PI*0.01;
                 break;
             case 'q': //aumentar minLife
                 if (minLife < MAX_MINLIFE) {
@@ -133,12 +134,12 @@ function main(shaders)
                 keysPressed[event.key] = true;
              
                 if (keysPressed['Shift'] && event.key == 'PageUp') {
-                    alert(event.key);
-                    return;
+                    test++;
+                    alert(test);
                 }
                 else if (keysPressed['Shift']&& event.key =='PageDown'){
-                    alert(event.key);
-                    return;
+                    test++;
+                    alert(test);
                    
 
                 } 
@@ -212,8 +213,8 @@ function main(shaders)
 
         for(let i=0; i<nParticles; ++i) {
             // position
-            const x = (Math.random() - 0.5) * 2*1.5;
-            const y = (Math.random() - 0.5) * 2*1.5*(canvas.height/canvas.width);
+            const x = 0.0;//(Math.random() - 0.5) * 2*1.5;
+            const y = 0.0;//(Math.random() - 0.5) * 2*1.5*(canvas.height/canvas.width);
 
             data.push(x); data.push(y);
             

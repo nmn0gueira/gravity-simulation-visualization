@@ -100,13 +100,10 @@ void main() {
    /* Update parameters according to our simple rules.*/
 
    //float theta = uMinTheta + rand(vPosition + uDeltaTime)*(uMaxTheta - uMinTheta);
-   //ao aumentar o minTheta diminui o maxTheta
+   //ao aumentar o minTheta diminui o maxTheta e vice versa
    float theta = uMinBeta + rand(vPosition + uDeltaTime)*(2.0*uMaxBeta - uMinBeta) + uAlpha;
    float x = cos(theta);
    float y = sin(theta);
-   
-
-   //float angle = alpha + beta - rand(vPosition*uDeltaTime)*2.0*beta;
 
    vPositionOut = vPosition + vVelocity * uDeltaTime; // p(t+h) = p(t) + v(t) * h 
    vAgeOut = vAge + uDeltaTime;
@@ -123,7 +120,7 @@ void main() {
       vAgeOut = 0.0;
       vPositionOut = uOrigin;
       vLifeOut = uMinLife+r2*(uMaxLife-uMinLife);
-      vVelocityOut = vec2(x, y) * (0.1 + rand(vPosition) * (0.2 - 0.1));  // calcular isto de forma semelhante a vida 
+      vVelocityOut = vec2(x, y) * (0.1 + r1 * (0.2 - 0.1));  // calcular isto de forma semelhante a vida 
       //vVelocityOut = vec2(x, y) * (velocityMin + rand(vPosition) * (velocityMax - velocityMin));
    }
 }
