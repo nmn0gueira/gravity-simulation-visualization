@@ -5,7 +5,7 @@ const float TWO_PI = 2.0*PI;
 const int MAX_PLANETS=10;
 const float MEDIUM_DENSITY = 5.51*pow(10.0,3.0); 
 const float SCALE_FACTOR = 6.371 * pow(10.0,6.0);
-const float UNIVERSAL_GRAVITATION = 6.67*pow(10.0,-11.0); // should work
+const float UNIVERSAL_GRAVITATION = 6.67*pow(10.0,-11.0); 
 
 uniform float uRadius[MAX_PLANETS];
 uniform vec2 uPosition[MAX_PLANETS];
@@ -24,7 +24,7 @@ float planet_mass(float radius) {
 
     return mass;
 }    
-
+//Calcula distancia entre dois pontos 
 float bodiesDistance(vec2 v1, vec2 v2){
    float dx = v1.x - v2.x;
    float dy = v1.y - v2.y;
