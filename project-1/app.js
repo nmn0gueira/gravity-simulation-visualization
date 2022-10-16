@@ -25,7 +25,6 @@ let minVel = 0.1;
 let maxBeta = Math.PI;
 let minBeta = 0.0;
 let alpha = 0.0;
-let test = 0;
 
 
 //-------
@@ -127,33 +126,10 @@ function main(shaders)
                 drawPoints  = !drawPoints;
                 break; 
             case 'Shift':
-            let keysPressed = {};
-            window.addEventListener('keydown', function(event)  {
-                keysPressed[event.key] = true;
-             
-                if (keysPressed['Shift'] && event.key == 'PageUp') {
-                    test++;
-                    alert(test);
-                }
-                else if (keysPressed['Shift']&& event.key =='PageDown'){
-                    test++;
-                    alert(test);
-                   
-
-                } 
-                else{
-                    origin = mousePosition; 
-                }
-            
-            });
-            window.addEventListener('keyup', (event) => {
-                delete keysPressed[event.key];
-             });
-
+                origin = mousePosition; 
               
-           
         }
-    })
+    });
     
     canvas.addEventListener("mousedown", function(event) {
         planetInputCenter = getCursorPosition(canvas, event);
@@ -171,6 +147,7 @@ function main(shaders)
     });
 
     canvas.addEventListener("mouseup", function(event) {
+        if (numberPlanets < MAX_PLANETS) {
         //SO DESENHAR ATE 10 PLANETAS
         planetInputBorder= getCursorPosition(canvas, event);
 
@@ -181,6 +158,7 @@ function main(shaders)
     
         //alert(planetCenters[numberPlanets]);
         numberPlanets++;
+        }
 
     })
 
@@ -224,17 +202,17 @@ function main(shaders)
             data.push(0.0);
 
             // life
-            const life = 6.0 + Math.random(); // mudar isto
+            const life = minLife+Math.random()*(maxLife-minLife); // mudar isto
             data.push(life);
 
             // velocity
-            let theta = minBeta + Math.random()*(2.0*maxBeta - minBeta) + alpha;
+            let theta = minBeta + Math.random()*2.0*(MAX_BETA_ANGLE - minBeta) + alpha;
             let cos = Math.cos(theta);
             let sin = Math.sin(theta);
 
             //let velocity = vec2(x, y) * (0.1 + r1 * (0.2 - 0.1));
-            data.push(cos* (0.1 + Math.random() * (0.2 - 0.1))); //por os valores minimos e maximos de vel
-            data.push(sin* (0.1 + Math.random() * (0.2 - 0.1))); //por os valores minimos e maximos de vel
+            data.push(cos* (0.1 + Math.random() * (0.2 - 0.1))); //mudar para os valores minimos e maximos de vel
+            data.push(sin* (0.1 + Math.random() * (0.2 - 0.1))); //mudar os valores minimos e maximos de vel
         }
 
         inParticlesBuffer = gl.createBuffer();
