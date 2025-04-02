@@ -5,6 +5,21 @@ This program simulates the movement of small masses (particles) in the gravitati
 
 The simulation is interactive, allowing the user to control the placement of particles and planets.
 
+### Running the Project Locally
+
+To run this project locally, follow these steps:
+
+1. **Clone the repository** to your local machine.
+   
+2. **Open the project folder** in Visual Studio Code.
+
+3. **Install the Live Server extension** in Visual Studio Code if you haven't already.
+
+4. **Start the Live Server**:
+- Right-click on the `index.html` file in the file explorer and select **"Open with Live Server"**.
+- Alternatively, click the **Go Live** button in the bottom-right corner of the VS Code window to start the server.
+
+
 ### Controls and Settings
 
 | **Setting** | **Range** | **Default** | **Control** |
@@ -23,6 +38,7 @@ The simulation is interactive, allowing the user to control the placement of par
 1. The position and velocity of each particle are updated based on the gravitational forces exerted by the planets.
 2. The user can control the initial placement, speed, and angle of the particles using the controls above.
 3. The simulation updates continuously, allowing for real-time interaction with the gravitational field.
+
 
 ### About
 This project was made as part of the Computer Graphics and Interfaces (2022/23) course at FCT NOVA.
