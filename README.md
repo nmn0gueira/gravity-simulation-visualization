@@ -41,4 +41,4 @@ To run this project locally, follow these steps:
 
 
 ### About
-This project was made as part of the Computer Graphics and Interfaces (2022/23) course at FCT NOVA.
+Developed as part of the Computer Graphics and Interfaces (2022/23) course at FCT NOVA.
