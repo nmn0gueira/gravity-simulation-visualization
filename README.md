@@ -29,8 +29,6 @@ The simulation is interactive, allowing the user to control the placement of par
 | Injection velocity angle (horizontal) | [-∞, +∞] | 0 | Left Arrow - rotate left, Right Arrow - rotate right |
 | Direction variation (particle source opening) | [0, π] | π | Up Arrow - increase, Down Arrow - decrease |
 
----
-
 ## How it works:
 1. The position and velocity of each particle are updated based on the gravitational forces exerted by the planets.
 2. The user can control the initial placement, speed, and angle of the particles using the controls above.
