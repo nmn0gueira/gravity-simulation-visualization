@@ -36,4 +36,4 @@ The simulation is interactive, allowing the user to control the placement of par
 
 
 ## About
-Developed as part of the Computer Graphics and Interfaces (2022/23) course at FCT NOVA.
+This project was developed as part of the Computer Graphics and Interfaces (2022/2023) at FCT-UNL.
